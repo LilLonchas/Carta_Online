@@ -3,36 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Olimpo Pub - Luxury Menu</title>
+    <title>Dehesa Terrones | Carta Digital</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
     <style>
-        :root { --gold: #d4af37; --dark: #080808; }
-        body { background-color: var(--dark); color: #f3f4f6; font-family: 'Plus Jakarta Sans', sans-serif; }
+        :root { --gold: #d4af37; --dark: #050505; }
+        body { background-color: var(--dark); color: #f3f4f6; font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden; }
         
-        /* Efecto de borde dorado animado para platos estrella */
-        .premium-card {
-            position: relative;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(212, 175, 55, 0.1);
-            overflow: hidden;
-        }
-        .premium-card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: -100%;
-            width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.1), transparent);
-            transition: 0.5s;
-        }
-        .premium-card:hover::before { left: 100%; }
-
         .gold-text { background: linear-gradient(135deg, #BF953F, #FCF6BA, #B38728); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         
-        /* Acordeón refinado */
-        .section-content { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.4s ease-out; opacity: 0; }
-        .section-wrapper.open .section-content { grid-template-rows: 1fr; opacity: 1; margin-top: 1.5rem; }
-        .inner-content { overflow: hidden; }
+        /* Tarjetas de platos mejoradas */
+        .premium-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(212, 175, 55, 0.08);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .premium-card:active { transform: scale(0.97); background: rgba(255, 255, 255, 0.05); border-color: rgba(212, 175, 55, 0.3); }
 
         .price-tag {
             background: rgba(212, 175, 55, 0.1);
@@ -40,91 +27,134 @@
             border-radius: 99px;
             border: 1px solid rgba(212, 175, 55, 0.2);
             color: var(--gold);
-            font-weight: 800;
+            font-weight: 700;
+            font-size: 0.9rem;
         }
+
+        /* Acordeón */
+        .section-content { display: grid; grid-template-rows: 0fr; transition: all 0.5s ease; opacity: 0; pointer-events: none; }
+        .section-wrapper.open .section-content { grid-template-rows: 1fr; opacity: 1; margin-top: 1.5rem; pointer-events: auto; }
+        .inner-content { overflow: hidden; }
+        
+        .chevron { transition: transform 0.4s ease; color: var(--gold); opacity: 0.4; }
+        .section-wrapper.open .chevron { transform: rotate(180deg); opacity: 1; }
+
+        /* Animación de carga */
+        .loader-ring { width: 40px; height: 40px; border: 2px solid rgba(212, 175, 55, 0.1); border-top-color: var(--gold); border-radius: 50%; animation: spin 1s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
     </style>
 </head>
 <body class="antialiased">
 
-    <header class="relative h-[40vh] flex items-center justify-center border-b border-white/5">
-        <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1555244162-803834f70033?q=80&w=2070')] bg-cover bg-fixed bg-center opacity-30"></div>
+    <header class="relative h-[35vh] flex items-center justify-center border-b border-white/5">
+        <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1555244162-803834f70033?q=80&w=2070')] bg-cover bg-center opacity-20"></div>
         <div class="absolute inset-0 bg-gradient-to-t from-dark via-dark/40 to-transparent"></div>
-        <div class="relative text-center">
-            <h1 class="font-display text-5xl md:text-7xl gold-text uppercase tracking-tighter mb-2">Olimpo Pub</h1>
-            <div class="h-1 w-24 bg-gold mx-auto mb-4 rounded-full shadow-[0_0_15px_rgba(212,175,55,0.5)]"></div>
-            <p class="text-xs uppercase tracking-[0.5em] text-white/40">Experiencia Premium</p>
+        <div class="relative text-center px-4">
+            <h1 class="font-display text-4xl md:text-6xl gold-text uppercase tracking-tighter mb-1">Dehesa Terrones</h1>
+            <p class="text-[10px] uppercase tracking-[0.6em] text-white/40 font-semibold">Selección Ibérica Premium</p>
         </div>
     </header>
 
-    <main class="max-w-2xl mx-auto px-6 py-12">
-        <div id="menu-loader" class="text-center py-20 text-gold animate-pulse uppercase tracking-widest text-xs">Cargando Selección del Chef...</div>
-        <div id="menu-container" class="space-y-8"></div>
+    <main class="max-w-2xl mx-auto px-5 py-10">
+        
+        <div class="flex justify-center mb-12">
+            <button onclick="downloadVCard()" class="flex items-center gap-3 px-8 py-3 bg-white/5 border border-white/10 rounded-full text-[10px] uppercase tracking-[0.2em] font-bold hover:bg-gold hover:text-dark transition-all">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 256 256"><path d="M224,48H32A16,16,0,0,0,16,64V192a16,16,0,0,0,16,16H224a16,16,0,0,0,16-16V64A16,16,0,0,0,224,48Zm0,144H32V64H224V192ZM160,112a40,40,0,1,1-40,40A40,40,0,0,1,160,112Z"></path></svg>
+                Guardar Contacto
+            </button>
+        </div>
+
+        <div id="menu-loader" class="flex flex-col items-center justify-center py-20">
+            <div class="loader-ring mb-4"></div>
+            <p class="text-[10px] uppercase tracking-widest text-gold/50">Consultando la Dehesa...</p>
+        </div>
+
+        <div id="menu-container" class="space-y-6"></div>
+
     </main>
 
-    <footer class="py-20 text-center border-t border-white/5">
-        <p class="text-[10px] text-white/20 uppercase tracking-widest mb-4 italic">"El sabor de la dehesa en cada bocado"</p>
-        
+    <footer class="py-16 text-center border-t border-white/5 bg-black/20">
+        <div class="font-display text-xl gold-text mb-2 italic text-2xl">Dehesa Terrones</div>
+        <p class="text-[9px] text-white/20 uppercase tracking-[0.3em] mb-6">Huércal-Overa • Almería</p>
+        <a href="https://docs.google.com/spreadsheets/d/TU_ID_AQUÍ" target="_blank" class="text-[8px] text-white/10 hover:text-gold uppercase tracking-widest transition-colors">Acceso Administración</a>
     </footer>
 
     <script>
-        // URL de tu Google Sheets (publicado como CSV)
+        // --- CONFIGURACIÓN ---
         const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQLQNS-lUWdqYaXpjzz2Q2pRkvNmKbVVqYvGAcu-uG8eCw3HPbB25w68WA_KLP9F7TeutOlbWG3mAuy/pub?output=csv'; 
 
-        async function loadMenu() {
+        async function init() {
             try {
-                // Si no tienes el CSV listo, usaremos datos de prueba para que veas el diseño
                 const response = await fetch(CSV_URL);
-                const data = await response.text();
-                // Aquí iría el parseo del CSV... por ahora te pongo el render visual PRO:
-                renderProMenu(); 
-            } catch (e) {
-                renderProMenu(); // Render de prueba si falla el fetch
+                const csvText = await response.text();
+                const menuData = parseCSV(csvText);
+                renderMenu(menuData);
+            } catch (error) {
+                console.error(error);
+                document.getElementById('menu-loader').innerHTML = "<p class='text-red-500 text-xs uppercase'>Error al conectar con la carta.</p>";
             }
         }
 
-        function renderProMenu() {
-            const container = document.getElementById('menu-container');
-            document.getElementById('menu-loader').style.display = 'none';
-            
-            // Datos de prueba (aquí irían los de tu Excel)
-            const demoData = [
-                { seccion: "Cortes Ibéricos", platos: [
-                    {n: "Presa de Bellota", p: "22.50€", d: "Acompañada de patatas panaderas y pimientos de padrón."},
-                    {n: "Secreto al Carbón", p: "19.80€", d: "Madurado 15 días en cámara propia."}
-                ]},
-                { seccion: "Selección de Quesos", platos: [
-                    {n: "Torta de la Serena", p: "14.00€", d: "Queso de oveja merina con textura cremosa."},
-                    {n: "Queso Viejo al Romero", p: "12.50€", d: "Curado 12 meses en aceite de oliva."}
-                ]}
-            ];
+        function parseCSV(text) {
+            const lines = text.split('\n').filter(l => l.trim() !== "");
+            const result = {};
+            // Empezamos en 1 para saltar los encabezados del Excel
+            for (let i = 1; i < lines.length; i++) {
+                const columns = lines[i].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/); // Soporta comas dentro de comillas
+                const [seccion, nombre, precio, desc] = columns.map(c => c?.replace(/"/g, '').trim());
+                
+                if (!seccion) continue;
+                if (!result[seccion]) result[seccion] = [];
+                result[seccion].push({ nombre, precio, desc });
+            }
+            return result;
+        }
 
-            demoData.forEach((sec, idx) => {
-                const wrap = document.createElement('div');
-                wrap.className = 'section-wrapper';
-                wrap.innerHTML = `
+        function renderMenu(data) {
+            const container = document.getElementById('menu-container');
+            const loader = document.getElementById('menu-loader');
+            loader.style.display = 'none';
+
+            Object.keys(data).forEach(seccion => {
+                const sectionDiv = document.createElement('div');
+                sectionDiv.className = 'section-wrapper';
+                
+                sectionDiv.innerHTML = `
                     <div onclick="this.parentElement.classList.toggle('open')" class="flex justify-between items-center cursor-pointer border-b border-white/10 pb-4 group">
-                        <h2 class="text-2xl font-display tracking-tight group-hover:text-gold transition-colors italic">${sec.seccion}</h2>
-                        <span class="text-gold opacity-30 text-2xl group-hover:rotate-45 transition-transform">+</span>
+                        <h2 class="text-xl md:text-2xl font-display tracking-wide group-hover:text-gold transition-colors italic uppercase">${seccion}</h2>
+                        <svg class="chevron w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                     </div>
                     <div class="section-content">
-                        <div class="inner-content space-y-4">
-                            ${sec.platos.map(p => `
-                                <div class="premium-card p-6 rounded-2xl group active:scale-[0.98] transition-all">
-                                    <div class="flex justify-between items-start mb-2">
-                                        <h3 class="font-bold text-lg text-white group-hover:text-gold transition-colors">${p.n}</h3>
-                                        <span class="price-tag">${p.p}</span>
+                        <div class="inner-content space-y-4 pt-2">
+                            ${data[seccion].map(p => `
+                                <div class="premium-card p-5 rounded-2xl">
+                                    <div class="flex justify-between items-start gap-4">
+                                        <div class="flex-1">
+                                            <h3 class="font-bold text-white tracking-wide text-sm md:text-base">${p.nombre}</h3>
+                                            ${p.desc ? `<p class="text-[11px] text-white/40 mt-1 leading-relaxed">${p.desc}</p>` : ''}
+                                        </div>
+                                        <div class="price-tag whitespace-nowrap">${p.precio}</div>
                                     </div>
-                                    <p class="text-sm text-white/50 leading-relaxed font-light">${p.d}</p>
                                 </div>
                             `).join('')}
                         </div>
                     </div>
                 `;
-                container.appendChild(wrap);
+                container.appendChild(sectionDiv);
             });
         }
 
-        document.addEventListener('DOMContentLoaded', loadMenu);
+        function downloadVCard() {
+            const vcard = `BEGIN:VCARD\nVERSION:3.0\nFN:Dehesa Terrones\nORG:Restaurante Ibérico\nTITLE:Reserva tu mesa\nTEL:+34000000000\nURL:https://dehesaterrones.com\nEND:VCARD`;
+            const blob = new Blob([vcard], { type: 'text/vcard' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'DehesaTerrones.vcf';
+            a.click();
+        }
+
+        window.onload = init;
     </script>
 </body>
 </html>
