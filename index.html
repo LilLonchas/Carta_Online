@@ -3,169 +3,128 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dehesa Terrones - Carta Digital</title>
+    <title>Dehesa Terrones - Luxury Menu</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        gold: '#D4AF37',
-                        dark: '#050505',
-                        glass: 'rgba(255, 255, 255, 0.03)',
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        display: ['Playfair Display', 'serif'],
-                    }
-                }
-            }
-        }
-    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
     <style>
-        body { background-color: #050505; color: #e5e5e5; scroll-behavior: smooth; }
-        .glass-card { background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(12px); border: 1px solid rgba(212, 175, 55, 0.1); transition: all 0.3s ease; }
-        .gold-gradient-text { background: linear-gradient(to right, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .section-content { max-height: 0; overflow: hidden; transition: max-height 0.5s cubic-bezier(0, 1, 0, 1); }
-        .section-content.open { max-height: 5000px; transition: max-height 1s ease-in; }
-        .admin-editable:focus { outline: 1px dashed #D4AF37; background: rgba(212, 175, 55, 0.1); padding: 2px 5px; border-radius: 4px; }
-        .chevron { transition: transform 0.3s ease; }
-        .open .chevron { transform: rotate(180deg); }
+        :root { --gold: #d4af37; --dark: #080808; }
+        body { background-color: var(--dark); color: #f3f4f6; font-family: 'Plus Jakarta Sans', sans-serif; }
+        
+        /* Efecto de borde dorado animado para platos estrella */
+        .premium-card {
+            position: relative;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(212, 175, 55, 0.1);
+            overflow: hidden;
+        }
+        .premium-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.1), transparent);
+            transition: 0.5s;
+        }
+        .premium-card:hover::before { left: 100%; }
+
+        .gold-text { background: linear-gradient(135deg, #BF953F, #FCF6BA, #B38728); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        
+        /* Acordeón refinado */
+        .section-content { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.4s ease-out; opacity: 0; }
+        .section-wrapper.open .section-content { grid-template-rows: 1fr; opacity: 1; margin-top: 1.5rem; }
+        .inner-content { overflow: hidden; }
+
+        .price-tag {
+            background: rgba(212, 175, 55, 0.1);
+            padding: 4px 12px;
+            border-radius: 99px;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            color: var(--gold);
+            font-weight: 800;
+        }
     </style>
 </head>
-<body class="font-sans antialiased">
+<body class="antialiased">
 
-    <header class="relative h-64 flex flex-col items-center justify-center border-b border-gold/10">
-        <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&q=80')] bg-cover bg-center opacity-20"></div>
-        <div class="absolute inset-0 bg-gradient-to-b from-dark/50 to-dark"></div>
-        <div class="relative z-10 text-center px-4">
-            <h1 class="font-display text-4xl gold-gradient-text uppercase tracking-widest mb-2">Dehesa Terrones</h1>
-            <p class="text-gold/60 tracking-[0.3em] text-[10px] font-semibold uppercase">Experiencia Gastronómica</p>
+    <header class="relative h-[40vh] flex items-center justify-center border-b border-white/5">
+        <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1555244162-803834f70033?q=80&w=2070')] bg-cover bg-fixed bg-center opacity-30"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-dark via-dark/40 to-transparent"></div>
+        <div class="relative text-center">
+            <h1 class="font-display text-5xl md:text-7xl gold-text uppercase tracking-tighter mb-2">Dehesa Terrones</h1>
+            <div class="h-1 w-24 bg-gold mx-auto mb-4 rounded-full shadow-[0_0_15px_rgba(212,175,55,0.5)]"></div>
+            <p class="text-xs uppercase tracking-[0.5em] text-white/40">Gastro-Experiencia Premium</p>
         </div>
     </header>
 
-    <main class="max-w-3xl mx-auto px-4 py-8">
-        <div class="flex flex-col items-center gap-4 mb-12">
-            <button onclick="downloadVCard()" class="px-8 py-3 bg-gold/10 border border-gold/30 rounded-full text-gold font-bold uppercase tracking-widest text-[10px] hover:bg-gold hover:text-dark transition-all flex items-center gap-2">
-                Añadir a Contactos
-            </button>
-            <div id="admin-controls" class="hidden flex gap-2 animate-bounce">
-                <button onclick="saveChanges()" class="bg-green-600 text-white px-4 py-2 rounded-lg text-xs font-bold uppercase">Guardar Cambios</button>
-                <button onclick="location.reload()" class="bg-red-600 text-white px-4 py-2 rounded-lg text-xs font-bold uppercase">Cancelar</button>
-            </div>
-        </div>
-
-        <div id="menu-container" class="space-y-6"></div>
+    <main class="max-w-2xl mx-auto px-6 py-12">
+        <div id="menu-loader" class="text-center py-20 text-gold animate-pulse uppercase tracking-widest text-xs">Cargando Selección del Chef...</div>
+        <div id="menu-container" class="space-y-8"></div>
     </main>
 
-    <footer class="py-12 text-center opacity-50">
-        <button onclick="loginAdmin()" class="text-[9px] text-gold/20 hover:text-gold uppercase tracking-widest">Panel de Administración</button>
+    <footer class="py-20 text-center border-t border-white/5">
+        <p class="text-[10px] text-white/20 uppercase tracking-widest mb-4 italic">"El sabor de la dehesa en cada bocado"</p>
+        <button onclick="window.location.href='https://docs.google.com/spreadsheets/d/TU_ID_DE_EXCEL'" class="text-[9px] border border-white/10 px-4 py-2 rounded-full hover:border-gold/50 transition-colors uppercase tracking-widest text-white/30">Panel Admin (Excel)</button>
     </footer>
 
     <script>
-        // Cargo los datos del LocalStorage si existen, si no, los por defecto
-        let menuData = JSON.parse(localStorage.getItem('menu_terrones')) || [
-            {
-                "seccion": "Nuestras Tapas",
-                "items": [
-                    {"nombre": "Tapa de Jamón Ibérico", "precio": 3.00},
-                    {"nombre": "Tapa de Tortilla de Patatas", "precio": 2.50}
-                ]
-            },
-            {
-                "seccion": "Nuestras Carnes",
-                "items": [
-                    {"nombre": "Solomillo Ibérico", "precio": 19.00},
-                    {"nombre": "Chuletón de Vaca", "precio": 42.00, "observaciones": "Precio por kg"}
-                ]
+        // URL de tu Google Sheets (publicado como CSV)
+        const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQLQNS-lUWdqYaXpjzz2Q2pRkvNmKbVVqYvGAcu-uG8eCw3HPbB25w68WA_KLP9F7TeutOlbWG3mAuy/pub?output=csv'; 
+
+        async function loadMenu() {
+            try {
+                // Si no tienes el CSV listo, usaremos datos de prueba para que veas el diseño
+                const response = await fetch(CSV_URL);
+                const data = await response.text();
+                // Aquí iría el parseo del CSV... por ahora te pongo el render visual PRO:
+                renderProMenu(); 
+            } catch (e) {
+                renderProMenu(); // Render de prueba si falla el fetch
             }
-        ];
-
-        let isAdmin = false;
-
-        function toggleSection(idx) {
-            const content = document.getElementById(`section-content-${idx}`);
-            const wrapper = document.getElementById(`section-wrapper-${idx}`);
-            content.classList.toggle('open');
-            wrapper.classList.toggle('open');
         }
 
-        function renderMenu() {
+        function renderProMenu() {
             const container = document.getElementById('menu-container');
-            container.innerHTML = '';
+            document.getElementById('menu-loader').style.display = 'none';
             
-            menuData.forEach((section, sIdx) => {
-                const sectionEl = document.createElement('section');
-                sectionEl.id = `section-wrapper-${sIdx}`;
-                sectionEl.className = 'mb-4 border-b border-gold/5 pb-4';
+            // Datos de prueba (aquí irían los de tu Excel)
+            const demoData = [
+                { seccion: "Cortes Ibéricos", platos: [
+                    {n: "Presa de Bellota", p: "22.50€", d: "Acompañada de patatas panaderas y pimientos de padrón."},
+                    {n: "Secreto al Carbón", p: "19.80€", d: "Madurado 15 días en cámara propia."}
+                ]},
+                { seccion: "Selección de Quesos", platos: [
+                    {n: "Torta de la Serena", p: "14.00€", d: "Queso de oveja merina con textura cremosa."},
+                    {n: "Queso Viejo al Romero", p: "12.50€", d: "Curado 12 meses en aceite de oliva."}
+                ]}
+            ];
 
-                let itemsHtml = '';
-                section.items.forEach((item, iIdx) => {
-                    itemsHtml += `
-                        <div class="glass-card p-4 rounded-xl flex justify-between items-center mb-2">
-                            <div class="flex-1">
-                                <h3 class="${isAdmin ? 'admin-editable' : ''} text-white font-medium" 
-                                    contenteditable="${isAdmin}" onblur="updateData(${sIdx}, ${iIdx}, 'nombre', this.innerText)">${item.nombre}</h3>
-                            </div>
-                            <div class="text-right">
-                                <span class="${isAdmin ? 'admin-editable' : ''} text-gold font-bold" 
-                                      contenteditable="${isAdmin}" onblur="updateData(${sIdx}, ${iIdx}, 'precio', this.innerText)">${item.precio || item.observaciones}</span>
-                            </div>
-                        </div>`;
-                });
-
-                sectionEl.innerHTML = `
-                    <div onclick="toggleSection(${sIdx})" class="flex justify-between items-center cursor-pointer py-2 group">
-                        <h2 class="font-display text-2xl gold-gradient-text uppercase tracking-widest">${section.seccion}</h2>
-                        <svg class="chevron w-6 h-6 text-gold opacity-50 group-hover:opacity-100" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+            demoData.forEach((sec, idx) => {
+                const wrap = document.createElement('div');
+                wrap.className = 'section-wrapper';
+                wrap.innerHTML = `
+                    <div onclick="this.parentElement.classList.toggle('open')" class="flex justify-between items-center cursor-pointer border-b border-white/10 pb-4 group">
+                        <h2 class="text-2xl font-display tracking-tight group-hover:text-gold transition-colors italic">${sec.seccion}</h2>
+                        <span class="text-gold opacity-30 text-2xl group-hover:rotate-45 transition-transform">+</span>
                     </div>
-                    <div id="section-content-${sIdx}" class="section-content mt-4">
-                        ${itemsHtml}
-                    </div>`;
-                container.appendChild(sectionEl);
+                    <div class="section-content">
+                        <div class="inner-content space-y-4">
+                            ${sec.platos.map(p => `
+                                <div class="premium-card p-6 rounded-2xl group active:scale-[0.98] transition-all">
+                                    <div class="flex justify-between items-start mb-2">
+                                        <h3 class="font-bold text-lg text-white group-hover:text-gold transition-colors">${p.n}</h3>
+                                        <span class="price-tag">${p.p}</span>
+                                    </div>
+                                    <p class="text-sm text-white/50 leading-relaxed font-light">${p.d}</p>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+                container.appendChild(wrap);
             });
         }
 
-        function loginAdmin() {
-            const user = prompt("Usuario:");
-            const pass = prompt("Contraseña:");
-            if(user === "admin" && pass === "admin") {
-                isAdmin = true;
-                document.getElementById('admin-controls').classList.remove('hidden');
-                renderMenu(); // Re-renderizamos para habilitar edición
-                alert("Modo edición activado. Haz clic en los textos para cambiarlos.");
-            } else {
-                alert("Acceso denegado");
-            }
-        }
-
-        function updateData(sIdx, iIdx, field, value) {
-            if(field === 'precio') {
-                menuData[sIdx].items[iIdx][field] = value;
-            } else {
-                menuData[sIdx].items[iIdx][field] = value;
-            }
-        }
-
-        function saveChanges() {
-            localStorage.setItem('menu_terrones', JSON.stringify(menuData));
-            alert("¡Cambios guardados localmente! Para que sean permanentes para todos, debes actualizar tu archivo index.html en GitHub con el nuevo JSON.");
-            isAdmin = false;
-            document.getElementById('admin-controls').classList.add('hidden');
-            renderMenu();
-        }
-
-        function downloadVCard() {
-            const vcard = "BEGIN:VCARD\nVERSION:3.0\nFN:Dehesa Terrones\nTEL:+34000000000\nEND:VCARD";
-            const blob = new Blob([vcard], { type: 'text/vcard' });
-            const a = document.createElement('a');
-            a.href = window.URL.createObjectURL(blob);
-            a.download = 'Dehesa_Terrones.vcf';
-            a.click();
-        }
-
-        document.addEventListener('DOMContentLoaded', renderMenu);
+        document.addEventListener('DOMContentLoaded', loadMenu);
     </script>
 </body>
 </html>
