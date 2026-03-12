@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dehesa Terrones - Carta Digital</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        gold: '#D4AF37',
+                        dark: '#050505',
+                        glass: 'rgba(255, 255, 255, 0.03)',
+                        glassBorder: 'rgba(212, 175, 55, 0.15)',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Playfair Display', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #050505;
+            color: #e5e5e5;
+            scroll-behavior: smooth;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(212, 175, 55, 0.1);
+            transition: all 0.3s ease;
+        }
+        .glass-card:hover {
+            border-color: rgba(212, 175, 55, 0.3);
+            background: rgba(255, 255, 255, 0.04);
+            transform: translateY(-2px);
+        }
+        .gold-gradient-text {
+            background: linear-gradient(to right, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .section-divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.3), transparent);
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.6s ease forwards;
+        }
+    </style>
+</head>
+<body class="font-sans antialiased">
+
+    <!-- Header -->
+    <header class="relative h-64 flex flex-col items-center justify-center overflow-hidden border-b border-gold/10">
+        <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&q=80&w=1920')] bg-cover bg-center opacity-20 scale-110"></div>
+        <div class="absolute inset-0 bg-gradient-to-b from-dark/50 via-dark/80 to-dark"></div>
+        
+        <div class="relative z-10 text-center px-4">
+            <h1 class="font-display text-5xl md:text-6xl gold-gradient-text uppercase tracking-[0.2em] mb-2 drop-shadow-2xl">
+                Dehesa Terrones
+            </h1>
+            <p class="text-gold/60 uppercase tracking-[0.4em] text-[10px] md:text-xs font-semibold">
+                Experiencia Gastronómica Ibérica
+            </p>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-3xl mx-auto px-4 py-12">
+        
+        <!-- vCard Button -->
+        <div class="flex justify-center mb-16">
+            <button onclick="downloadVCard()" class="group relative px-8 py-3 bg-gold/10 border border-gold/30 rounded-full text-gold font-bold uppercase tracking-widest text-xs hover:bg-gold hover:text-dark transition-all duration-500 flex items-center gap-3">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
+                Añadir a Contactos
+            </button>
+        </div>
+
+        <div id="menu-container" class="space-y-16">
+            <!-- Las categorías se inyectan aquí -->
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-16 border-t border-gold/10 bg-dark/50 text-center">
+        <div class="font-display text-2xl gold-gradient-text mb-4">Dehesa Terrones</div>
+        <p class="text-gold/40 text-[10px] uppercase tracking-[0.3em] mb-8">Selección Exclusiva • Calidad Suprema</p>
+        <div class="flex justify-center gap-6 mb-8">
+            <a href="#" class="text-gold/40 hover:text-gold transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+            </a>
+            <a href="#" class="text-gold/40 hover:text-gold transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            </a>
+        </div>
+        <p class="text-[9px] text-gold/20 uppercase tracking-widest">© 2026 Dehesa Terrones. Todos los derechos reservados.</p>
+    </footer>
+
+    <script>
+        const menuData = [
+            {
+                "seccion": "Nuestras Tapas",
+                "items": [
+                    {"nombre": "Tapa de Jamón Ibérico", "precio": 3.00},
+                    {"nombre": "Tapa de Lomo Ibérico", "precio": 3.00},
+                    {"nombre": "Tapa de Salchichón Ibérico", "precio": 2.80},
+                    {"nombre": "Tapa de Morcón Ibérico", "precio": 2.80},
+                    {"nombre": "Tapa de Lacón a la Gallega", "precio": 3.00},
+                    {"nombre": "Tapa de Queso Viejo", "precio": 3.00},
+                    {"nombre": "Tapa de Queso Viejo al Romero", "precio": 3.30},
+                    {"nombre": "Tapa de Torta de la Serena", "precio": 3.00},
+                    {"nombre": "Tapa de Anchoas", "precio": 3.00},
+                    {"nombre": "Tapa de Mejillones", "precio": 3.50},
+                    {"nombre": "Tapa de Salmón con Queso Philadelphia", "precio": 4.50},
+                    {"nombre": "Tapa de Bacalao con Queso Philadelphia", "precio": 4.50},
+                    {"nombre": "Tapa de Tortilla de Patatas", "precio": 2.50},
+                    {"nombre": "Tapa de Rulo con Mermelada de Tomate", "precio": 3.00},
+                    {"nombre": "Tapa de Ventresca con Pimiento del Piquillo", "precio": 3.50},
+                    {"nombre": "Tapa de Foie de Pato con Balsámico de Módena", "precio": 4.80}
+                ]
+            },
+            {
+                "seccion": "Tapas Premium",
+                "items": [
+                    {"nombre": "Solomillo Ibérico con Foie", "precio": 5.20},
+                    {"nombre": "Solomillo Ibérico con Torta de la Serena", "precio": 5.20},
+                    {"nombre": "Presa Ibérica con Brie y Cebolla Caramelizada", "precio": 6.10},
+                    {"nombre": "Presa Ibérica con Roquefort", "precio": 6.10},
+                    {"nombre": "Presa Ibérica con Queso Viejo y Pimientos", "precio": 6.50},
+                    {"nombre": "Foie y Rulo de Cabra con Cebolla Caramelizada", "precio": 5.20},
+                    {"nombre": "Huevos de Codorniz con Philadelphia y Cebolla Caramelizada", "precio": 4.20},
+                    {"nombre": "Salmón con Aguacate", "precio": 5.00},
+                    {"nombre": "Jamón Ibérico con Brie", "precio": 5.00},
+                    {"nombre": "Jamón Ibérico con Torta de la Serena", "precio": 5.00},
+                    {"nombre": "Jamón Ibérico con Foie", "precio": 5.50},
+                    {"nombre": "Tomate en Rodaja, Queso Tierno y Anchoas", "precio": 5.00},
+                    {"nombre": "Anchoas y Boquerones con Pimientos Asados", "precio": 5.00},
+                    {"nombre": "Bacalao con Salmorejo", "precio": 5.20},
+                    {"nombre": "Rulo con Cebolla Caramelizada", "precio": 4.20}
+                ]
+            },
+            {
+                "seccion": "Ibéricos y Quesos",
+                "items": [
+                    {"nombre": "Jamón Ibérico Cebo Campo", "media_racion": 10.95, "racion": 17.95},
+                    {"nombre": "Lomo Ibérico Cebo Campo", "media_racion": 10.95, "racion": 17.95},
+                    {"nombre": "Morcón Ibérico Cebo Campo", "media_racion": 9.95, "racion": 16.95},
+                    {"nombre": "Lacón de Cerdo Ibérico", "media_racion": 14.95, "racion": 16.95},
+                    {"nombre": "Queso Viejo", "media_racion": 9.95, "racion": 16.95},
+                    {"nombre": "Queso Viejo con Mermelada de Tomate", "media_racion": 10.95, "racion": 17.95},
+                    {"nombre": "Queso Viejo al Romero de Oveja", "media_racion": 14.95, "racion": 20.95},
+                    {"nombre": "Queso Semicurado", "media_racion": 9.50}
+                ]
+            },
+            {
+                "seccion": "Nuestras Carnes",
+                "items": [
+                    {"nombre": "Solomillo Ibérico", "precio": 19.00},
+                    {"nombre": "Presa Ibérica", "precio": 22.00},
+                    {"nombre": "Secreto Ibérico", "precio": 22.00},
+                    {"nombre": "Carrillera de Cerdo", "precio": 19.00},
+                    {"nombre": "Solomillo de Vaca Premium", "precio": 33.00},
+                    {"nombre": "Entrecot de Vaca Premium Madurada", "precio": 35.00},
+                    {"nombre": "Chuletón de Vaca Premium Madurada", "precio": 42.00, "precio_por_kg": true},
+                    {"nombre": "Chuletón de Vaca Rubia Gallega", "observaciones": "Consultar camarero"}
+                ]
+            },
+            {
+                "seccion": "Patatas y Huevos",
+                "items": [
+                    {"nombre": "Huevos Rotos con Jamón Ibérico", "precio": 16.00},
+                    {"nombre": "Huevos Rotos con Gulas", "precio": 16.00},
+                    {"nombre": "Huevos Rotos con Foie", "precio": 18.00},
+                    {"nombre": "Patatas Bravas", "precio": 7.50},
+                    {"nombre": "Patatas Terrones", "precio": 8.50}
+                ]
+            },
+            {
+                "seccion": "Nuestros Postres",
+                "items": [
+                    {"nombre": "Tarta Tres Chocolates", "precio": 5.95},
+                    {"nombre": "Tarta de Zanahoria", "precio": 6.95},
+                    {"nombre": "Tarta de Cerveza Negra", "precio": 6.95},
+                    {"nombre": "Tiramisú", "precio": 5.95},
+                    {"nombre": "Tarta de Queso al Horno", "precio": 6.50},
+                    {"nombre": "Tarta de la Abuela", "precio": 5.95},
+                    {"nombre": "Coulant", "precio": 5.00}
+                ]
+            }
+        ];
+
+        function renderMenu() {
+            const container = document.getElementById('menu-container');
+            menuData.forEach((section, sIdx) => {
+                const sectionEl = document.createElement('section');
+                sectionEl.className = 'animate-fade-in';
+                sectionEl.style.animationDelay = `${sIdx * 0.1}s`;
+
+                let itemsHtml = '';
+                section.items.forEach(item => {
+                    let priceHtml = '';
+                    if (item.precio) {
+                        priceHtml = `<span class="text-gold font-bold">${item.precio.toFixed(2)}€${item.precio_por_kg ? '/kg' : ''}</span>`;
+                    } else if (item.media_racion || item.racion) {
+                        priceHtml = `
+                            <div class="flex gap-4 text-[10px] uppercase tracking-tighter">
+                                ${item.media_racion ? `<div class="flex flex-col items-end"><span class="text-gold/40">1/2</span><span class="text-gold font-bold">${item.media_racion.toFixed(2)}€</span></div>` : ''}
+                                ${item.racion ? `<div class="flex flex-col items-end"><span class="text-gold/40">Rac.</span><span class="text-gold font-bold">${item.racion.toFixed(2)}€</span></div>` : ''}
+                            </div>
+                        `;
+                    } else if (item.observaciones) {
+                        priceHtml = `<span class="text-gold/40 italic text-xs">${item.observaciones}</span>`;
+                    }
+
+                    itemsHtml += `
+                        <div class="glass-card p-5 rounded-2xl flex justify-between items-center gap-4">
+                            <div class="flex-1">
+                                <h3 class="text-white font-semibold tracking-wide mb-1">${item.nombre}</h3>
+                                ${item.observaciones && !item.precio && !item.media_racion ? '' : item.observaciones ? `<p class="text-white/40 text-xs italic">${item.observaciones}</p>` : ''}
+                            </div>
+                            <div class="text-right">
+                                ${priceHtml}
+                            </div>
+                        </div>
+                    `;
+                });
+
+                sectionEl.innerHTML = `
+                    <div class="flex items-center gap-4 mb-8">
+                        <h2 class="font-display text-3xl gold-gradient-text uppercase tracking-widest whitespace-nowrap">${section.seccion}</h2>
+                        <div class="section-divider flex-1"></div>
+                    </div>
+                    <div class="grid grid-cols-1 gap-4">
+                        ${itemsHtml}
+                    </div>
+                `;
+                container.appendChild(sectionEl);
+            });
+        }
+
+        function downloadVCard() {
+            const vcard = `BEGIN:VCARD
+VERSION:3.0
+FN:Dehesa Terrones
+ORG:Dehesa Terrones;Restaurante
+TITLE:Experiencia Gastronómica Ibérica
+NOTE:Carta Digital y Selección de Ibéricos
+URL:https://dehesaterrones.com
+END:VCARD`;
+
+            const blob = new Blob([vcard], { type: 'text/vcard' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.style.display = 'none';
+            a.href = url;
+            a.download = 'Dehesa_Terrones.vcf';
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+        }
+
+        document.addEventListener('DOMContentLoaded', renderMenu);
+    </script>
+</body>
+</html>
